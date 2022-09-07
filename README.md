@@ -6,7 +6,7 @@ Perform operations on two different tables.
 
  - Table Name: device_serial_table
  - Primary Key: "device_serial"
-<center>
+
 | Operation | Path |
 |--|--|
 | Create Item | /device/create |
@@ -14,14 +14,12 @@ Perform operations on two different tables.
 | Update Item | /device/update |
 | Delete Item | /device/delete |
 | Get All Items | /device/get_all |
-</center>
 
 ## Table 2
 
 - Table Name: user_id_table
 - Primary Key: "identity_id
 
-<center>
 | Operation | Path |
 |--|--|
 | Create Item | /user/create |
@@ -29,4 +27,3 @@ Perform operations on two different tables.
 | Update Item | /user/update |
 | Delete Item | /user/delete |
 | Get All Items | /user/get_all |
-</center>
