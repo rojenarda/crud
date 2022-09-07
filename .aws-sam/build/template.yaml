@@ -1,0 +1,200 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Runtime: python3.9
+    Handler: app.lambda_handler
+    Architectures:
+    - x86_64
+Resources:
+  DeviceApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: v1
+      Auth:
+        DefaultAuthorizer: AWS_IAM
+  UserApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: v1
+      Auth:
+        DefaultAuthorizer: AWS_IAM
+  CreateDeviceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+      - DynamoDBWritePolicy:
+          TableName: device_serial_table
+      CodeUri: CreateDeviceFunction
+      Events:
+        DeviceApi:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: DeviceApi
+            Path: /device/create
+            Method: post
+    Metadata:
+      SamResourceId: CreateDeviceFunction
+  ReadDeviceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName: device_serial_table
+      CodeUri: ReadDeviceFunction
+      Events:
+        DeviceApi:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: DeviceApi
+            Path: /device/read
+            Method: post
+    Metadata:
+      SamResourceId: ReadDeviceFunction
+  UpdateDeviceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+      - DynamoDBWritePolicy:
+          TableName: device_serial_table
+      CodeUri: UpdateDeviceFunction
+      Events:
+        DeviceApi:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: DeviceApi
+            Path: /device/update
+            Method: post
+    Metadata:
+      SamResourceId: UpdateDeviceFunction
+  DeleteDeviceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: device_serial_table
+      CodeUri: DeleteDeviceFunction
+      Events:
+        DeviceApi:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: DeviceApi
+            Path: /device/delete
+            Method: post
+    Metadata:
+      SamResourceId: DeleteDeviceFunction
+  GetAllDeviceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName: device_serial_table
+      CodeUri: GetAllDeviceFunction
+      Events:
+        DeviceAPI:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: DeviceApi
+            Path: /device/get_all
+            Method: post
+    Metadata:
+      SamResourceId: GetAllDeviceFunction
+  CreateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+      - DynamoDBWritePolicy:
+          TableName: user_id_table
+      CodeUri: CreateUserFunction
+      Events:
+        UserApi:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: UserApi
+            Path: /user/create
+            Method: post
+    Metadata:
+      SamResourceId: CreateUserFunction
+  ReadUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName: user_id_table
+      CodeUri: ReadUserFunction
+      Events:
+        UserApi:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: UserApi
+            Path: /user/read
+            Method: post
+    Metadata:
+      SamResourceId: ReadUserFunction
+  UpdateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+      - DynamoDBWritePolicy:
+          TableName: user_id_table
+      CodeUri: UpdateUserFunction
+      Events:
+        UserApi:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: UserApi
+            Path: /user/update
+            Method: post
+    Metadata:
+      SamResourceId: UpdateUserFunction
+  DeleteUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: user_id_table
+      CodeUri: DeleteUserFunction
+      Events:
+        UserApi:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: UserApi
+            Path: /user/delete
+            Method: post
+    Metadata:
+      SamResourceId: DeleteUserFunction
+  GetAllUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName: user_id_table
+      CodeUri: GetAllUserFunction
+      Events:
+        DeviceAPI:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: UserApi
+            Path: /user/get_all
+            Method: post
+    Metadata:
+      SamResourceId: GetAllUserFunction
+Outputs:
+  DeviceApiURL:
+    Description: API endpoint URL for operations on device_serial_table
+    Value:
+      Fn::Sub: https://${DeviceApi}.execute-api.${AWS::Region}.amazonaws.com/v1
+  UserApiURL:
+    Description: API endpoint URL for operations on user_id_table
+    Value:
+      Fn::Sub: https://${UserApi}.execute-api.${AWS::Region}.amazonaws.com/v1
