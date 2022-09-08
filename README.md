@@ -6,6 +6,7 @@ Perform operations on two different tables.
 
  - Table Name: device_serial_table
  - Primary Key: "device_serial"
+ - Primary Key Type: string
 
 | Operation | Path |
 |--|--|
@@ -17,8 +18,9 @@ Perform operations on two different tables.
 
 ## Table 2
 
-- Table Name: user_id_table
-- Primary Key: "identity_id
+ - Table Name: user_id_table
+ - Primary Key: "identity_id
+ - Primary Key Type: string
 
 | Operation | Path |
 |--|--|
