@@ -1,6 +1,6 @@
 # AWS CRUD PROJECT
 
-Perform operations on two different tables.
+Perform operations on two different AWS DynamoDB tables.
 
 ## Table 1
 
