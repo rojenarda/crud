@@ -1,6 +1,7 @@
 import boto3
 import json
 import traceback
+from decimal import Decimal
 
 def lambda_handler(event, context):
     try:
@@ -24,7 +25,16 @@ def lambda_handler(event, context):
             "body": traceback.format_exc()
         }
 
+    def decimal_handler(obj):
+        if isinstance(obj, Decimal):
+            if float(obj).is_integer():
+                return int(obj)
+            else:
+                return float(obj)
+        else:
+            return obj
+
     return {
         "statusCode": response["ResponseMetadata"]["HTTPStatusCode"],
-        "body": json.dumps(response["Item"])
+        "body": json.dumps(response["Item"], default=decimal_handler)
     }
